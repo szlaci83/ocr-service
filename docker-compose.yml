@@ -1,0 +1,29 @@
+version: "2"
+services:
+  rest_api:
+    container_name: ocr
+    image: szlaci83/ocr
+    restart: always
+    build: .
+    ports:
+      - "4567:4567"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27018:27017"
+  webapp:
+    container_name: webapp
+    image: szlaci83/webapp
+    build: WebApp/dist
+    ports:
+      - "80:80"
+    links:
+      - rest_api
+    depends_on:
+      - rest_api
+
